@@ -61,16 +61,19 @@ def buysomething():
 
     cookies = available_cookies()
 
-    # try to buy the most expensive thing _with a higher number than minitem_!
+    # try to buy the most expensive thing _with a higher number than minitem_-1, this allows
+    # purchasing of the newest item and the second newest item
 
-    buyproduct=-1; # if a product was bought, step the minitem limit if necessary
+    buyproduct=-1; 
     for i in range(minitem-1,10): # initially 0-9
         if(cookies>costs[i]): # buy if we have more money
             buyproduct=i;
 
-    if buyproduct>-1:
+    if buyproduct > -1: # we found something to buy. let's buy it.
         buy_product(buyproduct)
-        minitem=buyproduct+1
+        print "bought something, changing minitem from "+str(minitem)+" to "+str(buyproduct)+"\n"
+        if buyproduct > minitem:
+            minitem=buyproduct
         costs = product_price()
         return True
 
@@ -82,6 +85,11 @@ def buysomething():
 
 costs = product_price()
 minitem = 1
+
+# start by stepping up until we can get a farm
+
+for i in range(510):
+    click_the_cookie()
 
 while True:
     bought = True;
