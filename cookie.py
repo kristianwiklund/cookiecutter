@@ -21,20 +21,31 @@ from time import sleep
 #driver = webdriver.Firefox() # yup. crashes firefox ;)
 driver = webdriver.Chrome()
 
+inventory = [0,0,0,0,0,0,0,0,0,0]
 
-driver.get("http://orteil.dashnet.org/cookieclicker/");
+driver.get("http://orteil.dashnet.org/cookieclicker/")
 sleep(5); # grace period
 
 assert "Cookie Clicker" in driver.title
 
 # function to read how many cookies we have
 def available_cookies():
-    cookies = driver.find_element_by_css_selector("div#cookies.title");
+    cookies = driver.find_element_by_css_selector("div#cookies.title")
     return int(cookies.text.replace(",","").partition(" ")[0])
 
 # clicks the big cookie
 def click_the_cookie():
-    driver.find_element_by_css_selector("div#bigCookie").click();
+    driver.find_element_by_css_selector("div#bigCookie").click()
+
+# function to parse the info about one upgrade
+def parse_upgrade(i):
+    # find the upgrade
+    u = driver.find_element_by_css_selector("#upgrade"+str(i))
+    
+    #onmouseover contains the info we need.
+    m = u.get_attribute("onmouseover")
+
+
 
 # function to read how many cookies are needed to buy the products
 # products 0-9
@@ -58,6 +69,7 @@ def buy_product(i):
 def buysomething():
     global costs
     global minitem
+#    global inventory
 
     cookies = available_cookies()
 
@@ -71,14 +83,32 @@ def buysomething():
 
     if buyproduct > -1: # we found something to buy. let's buy it.
         buy_product(buyproduct)
-        print "bought something, changing minitem from "+str(minitem)+" to "+str(buyproduct)+"\n"
+        inventory[buyproduct] = inventory[buyproduct]+1
+        print "bought something, having "+str(inventory)+"\n"
+
         if buyproduct > minitem:
             minitem=buyproduct
+            # sell of the older items
+            
+            for j in range(0,buyproduct-1):
+                while inventory[j]>0:
+                    sellproduct(j)
+
         costs = product_price()
         return True
 
     return False
 
+##
+## sell one item of something
+
+def sellproduct(i):
+    x=driver.find_element_by_css_selector("#rowInfoContent"+str(i)+" + div a")
+    
+    if x:
+        x.click()
+        inventory[i] = inventory[i] - 1 
+        print "sold something, having "+str(inventory)+"\n"
 
 ###
 ### "main" loop
@@ -88,8 +118,8 @@ minitem = 1
 
 # start by stepping up until we can get a farm
 
-for i in range(510):
-    click_the_cookie()
+#for i in range(510):
+#    click_the_cookie()
 
 while True:
     bought = True;
