@@ -1,0 +1,146 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>cookie-clicker.sikuli</h2> <a href="cookie-clicker.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+cursor = exists(Pattern(<img src="1381305994462.png" />).targetOffset(-<span class="dig">8</span>,<span class="dig">9</span>))
+
+grandma = exists(<img src="1381306302461.png" />)
+
+farm = exists(<img src="1381306326337.png" />)
+
+factory = exists(<img src="1381306337401.png" />)
+
+mine = exists(<img src="1381306355577.png" />)
+
+shipment = exists(<img src="1381306380099.png" />)
+
+lab = exists(<img src="1381306389833.png" />)
+
+portal = exists(<img src="1381306398750.png" />)
+
+cookie = exists(<img src="1381306626003.png" />)
+
+
+<span class="cmt"># challenge: there is not enough contrast in the buttons to make it possible to use sikuli straight off
+</span><span class="cmt"># THIS REALLY DOES NOT WORK
+</span><span class="kw">def</span> buysomething():
+
+    bought = False
+
+
+
+    <span class="kw">if</span>(portal):
+        <span class="skw">click</span>(portal)
+
+    <span class="kw">if</span>(lab):
+        <span class="skw">click</span>(lab)
+
+    <span class="kw">if</span>(shipment):
+        <span class="skw">click</span>(shipment)
+
+    <span class="kw">if</span>(mine):
+        <span class="skw">click</span>(mine)
+
+    <span class="kw">if</span>(factory):
+        <span class="skw">click</span>(factory)
+
+    <span class="kw">if</span>(farm):
+        <span class="skw">click</span>(farm)
+
+    <span class="kw">if</span>(grandma):
+        <span class="skw">click</span>(grandma)
+
+
+    <span class="kw">if</span>(cursor):
+        <span class="skw">click</span>(cursor)
+
+    <span class="kw">return</span> bought
+
+
+
+<span class="kw">def</span> cookieclick(n):
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">1</span>,n):
+        <span class="skw">click</span>(cookie)
+
+<span class="cmt">#cookieclick(15)
+</span>
+stop=False
+
+<span class="kw">while</span> <span class="kw">not</span> stop:
+    buy=True
+
+    <span class="kw">while</span> buy:
+        buy=buysomething()
+
+    cookieclick(<span class="dig">10</span>)
+</pre>
+</body>
+</html>
