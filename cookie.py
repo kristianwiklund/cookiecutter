@@ -35,7 +35,11 @@ def available_cookies():
 
 # clicks the big cookie
 def click_the_cookie():
-    driver.find_element_by_css_selector("div#bigCookie").click()
+    kaka = False
+    while not kaka:
+        kaka = driver.find_element_by_css_selector("div#bigCookie")
+    kaka.click()
+
 
 # function to parse the info about one upgrade
 def parse_upgrade(i):
@@ -44,8 +48,6 @@ def parse_upgrade(i):
     
     #onmouseover contains the info we need.
     m = u.get_attribute("onmouseover")
-
-
 
 # function to read how many cookies are needed to buy the products
 # products 0-9
@@ -79,7 +81,12 @@ def buysomething():
     buyproduct=-1; 
     for i in range(minitem-1,10): # initially 0-9
         if(cookies>costs[i]): # buy if we have more money
-            buyproduct=i;
+            if i==9:
+                buyproduct=i
+            else:
+                if (inventory[i] < inventory[i+1]) or (inventory[i+1]<1):
+                    buyproduct=i
+                
 
     if buyproduct > -1: # we found something to buy. let's buy it.
         buy_product(buyproduct)
@@ -90,9 +97,10 @@ def buysomething():
             minitem=buyproduct
             # sell of the older items
             
-            for j in range(0,buyproduct-1):
-                while inventory[j]>0:
-                    sellproduct(j)
+#            for j in range(0,buyproduct-1):
+#                while inventory[j]>0:
+#                    sellproduct(j)
+#                    sleep(0.1)
 
         costs = product_price()
         return True
