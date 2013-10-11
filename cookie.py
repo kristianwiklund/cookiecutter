@@ -79,14 +79,18 @@ def buysomething():
     # purchasing of the newest item and the second newest item
 
     buyproduct=-1; 
-    for i in range(minitem-1,10): # initially 0-9
+#    for i in range(minitem-1,10): # initially 0-9
+    for i in range(0,10): # initially 0-9
         if(cookies>costs[i]): # buy if we have more money
             if i==9:
                 buyproduct=i
             else:
-                if (inventory[i] < inventory[i+1]) or (inventory[i+1]<1):
-                    buyproduct=i
-                
+                if False: # strategy to never buy more items than the above one
+                    if (inventory[i] < inventory[i+1]) or (inventory[i+1]<1):
+                        buyproduct=i
+                else:
+                    if (costs[i] < costs[i+1]/3): # buy if less than 1/3 of above
+                        buyproduct=i
 
     if buyproduct > -1: # we found something to buy. let's buy it.
         buy_product(buyproduct)
