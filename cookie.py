@@ -48,6 +48,7 @@ def parse_upgrade(i):
     
     #onmouseover contains the info we need.
     m = u.get_attribute("onmouseover")
+    
 
 # function to read how many cookies are needed to buy the products
 # products 0-9
