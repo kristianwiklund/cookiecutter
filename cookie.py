@@ -22,6 +22,7 @@ from time import sleep
 driver = webdriver.Chrome()
 
 inventory = [0,0,0,0,0,0,0,0,0,0]
+cps = 0
 
 driver.get("http://orteil.dashnet.org/cookieclicker/")
 sleep(5); # grace period
@@ -32,6 +33,11 @@ assert "Cookie Clicker" in driver.title
 def available_cookies():
     cookies = driver.find_element_by_css_selector("div#cookies.title")
     return int(cookies.text.replace(",","").partition(" ")[0])
+
+# function to read CpS
+def cookies_per_second():
+    cookies = driver.find_element_by_css_selector("div#cookies.title")
+    return int(cookies.text.replace(",","").partition(":")[2].partition(".")[0])
 
 # clicks the big cookie
 def click_the_cookie():
@@ -65,6 +71,8 @@ def product_price():
 def buy_product(i):
     x=driver.find_element_by_css_selector("div#product"+str(i))
     x.click()
+    # update cookies per second
+    cps = cookies_per_second()
     sleep(1)
 
 # buy an item if the price is right
@@ -82,7 +90,7 @@ def buysomething():
     buyproduct=-1; 
 #    for i in range(minitem-1,10): # initially 0-9
     for i in range(0,10): # initially 0-9
-        if(cookies>costs[i]): # buy if we have more money
+        if(cookies>=costs[i]): # buy if we have enough money
             if i==9:
                 buyproduct=i
             else:
@@ -92,6 +100,9 @@ def buysomething():
                 else:
                     if (costs[i] < costs[i+1]/3): # buy if less than 1/3 of above
                         buyproduct=i
+                    else:
+                        if costs[i] < cps*2: # buy if it takes less than 2 sec to refill
+                            buyproduct=i
 
     if buyproduct > -1: # we found something to buy. let's buy it.
         buy_product(buyproduct)
@@ -129,18 +140,18 @@ def sellproduct(i):
 costs = product_price()
 minitem = 1
 
-# start by stepping up until we can get a farm
+# start by stepping up until we can get a cursor
 
-#for i in range(510):
-#    click_the_cookie()
+for i in range(15):
+    click_the_cookie()
 
 while True:
     bought = True;
     while bought:
         bought=buysomething()
         
-    click_the_cookie()
-#    sleep(0.1)
+#    click_the_cookie()
+    sleep(2)
 
                 
 driver.close();
